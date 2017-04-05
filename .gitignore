@@ -1,5 +1,5 @@
 /node_modules
 /npm-debug.log
 /.idea
-/config/config.json
-/data/tags.test.json
+/dist
+/obj/test

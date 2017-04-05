@@ -6,17 +6,16 @@ and provides high-level API to access the microservice for simple and productive
 
 * [Installation](#install)
 * [Getting started](#get_started)
-* [Tag class](#class1)
-* [ITagsClient interface](#interface)
-    - [init()](#operation1)
-    - [open()](#operation2)
-    - [close()](#operation3)
-    - [getTags()](#operation4)
-    - [setTags()](#operation5)
-    - [recordTags()](#operation6)
-* [TagsRestClient class](#client_rest)
-* [TagsSenecaClient class](#client_seneca)
-* [TagsNullClient class](#client_null)
+* [PartyTagsV1 class](#class1)
+* [TagRecordV1 class](#class2)
+* [ITagsClientV1 interface](#interface)
+    - [getTags()](#operation1)
+    - [setTags()](#operation2)
+    - [recordTags()](#operation3)
+* [TagsHttpClientV1 class](#client_http)
+* [TagsSenecaClientV1 class](#client_seneca)
+* [TagsDirectClientV1 class](#client_direct)
+* [TagsNullClientV1 class](#client_null)
 
 ## <a name="install"></a> Installation
 
@@ -27,7 +26,7 @@ To work with the client SDK add dependency into package.json file:
     ...
     "dependencies": {
         ....
-        "pip-clients-tags-node": "git+ssh://git@github.com:pip-services/pip-clients-tags-node.git",
+        "pip-clients-tags-node": "^1.0.*",
         ...
     }
 }
@@ -43,33 +42,28 @@ npm install
 npm update
 ```
 
-If you are using Typescript, add the following type definition where compiler can find it
-```javascript
-/// <reference path="../node_modules/pip-clients-tags-node/module.d.ts" />
-```
-
 ## <a name="get_started"></a> Getting started
 
 This is a simple example on how to work with the microservice using REST client:
 
 ```javascript
 // Get Client SDK for Version 1 
-var sdk = new require('pip-clients-tags-node').Version1;
+var sdk = new require('pip-clients-tags-node');
 
 // Client configuration
 var config = {
-    transport: {
-        type: 'http',
+    connection: {
+        protocol: 'http',
         host: 'localhost', 
         port: 8012
     }
 };
 
 // Create the client instance
-var client = sdk.TagsRestClient(config);
+var client = sdk.TagsHttpClientV1(config);
 
 // Open client connection to the microservice
-client.open(function(err) {
+client.open(null, function(err) {
     if (err) {
         console.error(err);
         return; 
@@ -79,6 +73,7 @@ client.open(function(err) {
     
     // Record tags
     client.recordTags(
+        null,
         '123',
         ['draft', 'important'], 
         function (err, tags) {
@@ -92,6 +87,7 @@ client.open(function(err) {
             
             // Read tags usage history
             client.getTags(
+                null,
                 '123',
                 function (err, tags) {
                     if (err) {
@@ -111,147 +107,138 @@ client.open(function(err) {
 });
 ```
 
-## <a name="class1"></a> Tag class
+### <a name="class1"></a> PartyTagsV1 class
+
+Contains collection of all recorded tags used by a party
+
+**Properties:**
+- id: string - unique party id
+- tags: TagRecordV1[] - array with recorded tags
+- changed_time: Date - date and time when the tags where changed
+
+### <a name="class2"></a> TagRecordV1 class
 
 Represents a record of specific tag usage by the party
 
-**Properties:**
-- tag: string - a tag string
-- count: number - how manu times the tag was used
-- used: Date - date and time when the tag used for the last time
-
-## <a name="interface"></a> ITagsClient interface
+## <a name="interface"></a> ITagsClientV1 interface
 
 If you are using Typescript, you can use ITagsClient as a common interface across all client implementations. 
 If you are using plain Javascript, you shall not worry about ITagsClient. You can just expect that
 all methods defined in this interface are implemented by all client classes.
 
 ```javascript
-interface ITagsClient {
-    init(refs);
-    open(callback);
-    close(callback);
-    getTags(partyId, callback);
-    setTags(partyId, tagRecords, callback);
-    recordTags(partyId, tags, callback);
+interface ITagsClientV1 {
+    getTags(correlationId, partyId, callback);
+    setTags(correlationId, partyTags, callback);
+    recordTags(correlationId, partyId, tags, callback);
 }
 ```
 
-### <a name="operation1"></a> init(refs)
-
-Initializes client references. This method is optional. It is used to set references 
-to logger or performance counters.
-
-**Arguments:**
-- refs: References - references to other components 
-  - log: ILog - reference to logger
-  - countes: ICounters - reference to performance counters
-
-### <a name="operation2"></a> open(callback)
-
-Opens connection to the microservice
-
-**Arguments:**
-- callback: (err) => null - callback function
-  - err - Error or null is no error occured
-
-### <a name="operation3"></a> close(callback)
-
-Closes connection to the microservice
-
-**Arguments:**
-- callback: (err) => null - callback function
-  - err - Error or null is no error occured
-
-### <a name="operation4"></a> getTags(partyId, callback)
+### <a name="operation1"></a> getTags(correlationId, partyId, callback)
 
 Retrieves tags usage history for specified party
 
 **Arguments:** 
+- correlationId: string - id that uniquely identifies transaction
 - partyId: string - unique party id
 - callback: (err, tagRecords) => void - callback function
   - err: Error - occured error or null for success
-  - tagRecords: [Tag] - history of tags used by the party
+  - result: PartyTagsV1 - object with party id and recorded tags
 
-### <a name="operation5"></a> setTags(partyId, tagRecords, callback)
+### <a name="operation2"></a> setTags(correlationId, partyTags, callback)
 
 Sets tags usage history for the specified party
 
 **Arguments:** 
-- partyId: string - unique party id
-- tagRecords: [Tag] - history of tags to be stored for the party
+- correlationId: string - id that uniquely identifies transaction
+- partyTags: PartyTagsV1 - object with party id and recorded tags
 - callback: (err, tagRecords) => void - callback function
   - err: Error - occured error or null for success
-  - tagRecords: [Tag] - updated history of tags used by the party
+  - result: PartyTagsV1 - object with party id and recorded tags
 
-### <a name="operation6"></a> recordTags(partyId, tags, callback)
+### <a name="operation3"></a> recordTags(correlationId, partyId, tags, callback)
 
 Records single instance of tags usage and updates the tags history.
 
 **Arguments:** 
+- correlationId: string - id that uniquely identifies transaction
 - partyId: string - unique party id
 - tags: [string] - tags used by the party to be added to the history
 - callback: (err, tagRecords) => void - callback function
   - err: Error - occured error or null for success
-  - tagRecords: [Tag] - updated history of tags used by the party
+  - result: PartyTagsV1 - object with party id and recorded tags
  
-## <a name="client_rest"></a> TagsRestClient class
+## <a name="client_rest"></a> TagsHttpClientV1 class
 
-TagsRestClient is a client that implements HTTP/REST protocol
+TagsHttpClientV1 is a client that implements HTTP protocol
 
 ```javascript
-class TagsRestClient extends RestClient implements ITagsClient {
+class TagsHttpClientV1 extends CommandableHttpClient implements ITagsClientV1 {
     constructor(config?: any);
-    init(refs);
-    open(callback);
-    close(callback);
-    getTags(partyId, callback);
-    setTags(partyId, tagRecords, callback);
-    recordTags(partyId, tags, callback);
+    setReferences(references);
+    open(correlationId, callback);
+    close(correlationId, callback);
+    getTags(correlationId, partyId, callback);
+    setTags(correlationId, partyId, tagRecords, callback);
+    recordTags(correlationId, partyId, tags, callback);
 }
 ```
 
 **Constructor config properties:** 
-- transport: object - HTTP transport configuration options
-  - type: string - HTTP protocol - 'http' or 'https' (default is 'http')
+- connection: object - HTTP transport configuration options
+  - protocol: string - HTTP protocol - 'http' or 'https' (default is 'http')
   - host: string - IP address/hostname binding (default is '0.0.0.0')
   - port: number - HTTP port number
 
-## <a name="client_seneca"></a> TagsSenecaClient class
+## <a name="client_seneca"></a> TagsSenecaClientV1 class
 
-TagsSenecaClient is a client that implements Seneca protocol
+TagsSenecaClientV1 is a client that implements Seneca protocol
 
 ```javascript
-class TagsSenecaClient extends SenecaClient implements ITagsClient {
+class TagsSenecaClientV1 extends CommandableSenecaClient implements ITagsClientV1 {
     constructor(config?: any);        
-    init(refs);
-    open(callback);
-    close(callback);
-    getTags(partyId, callback);
-    setTags(partyId, tagRecords, callback);
-    recordTags(partyId, tags, callback);
+    setReferences(references);
+    open(correlationId, callback);
+    close(correlationId, callback);
+    getTags(correlationId, partyId, callback);
+    setTags(correlationId, partyId, tagRecords, callback);
+    recordTags(correlationId, partyId, tags, callback);
 }
 ```
 
 **Constructor config properties:** 
-- transport: object - (optional) Seneca transport configuration options. See http://senecajs.org/api/ for details.
-  - type: string - Seneca transport type 
+- connection: object - (optional) Seneca transport configuration options. See http://senecajs.org/api/ for details.
+  - protocol: string - Seneca transport type 
   - host: string - IP address/hostname binding (default is '0.0.0.0')
   - port: number - Seneca port number
 
-## <a name="client_null"></a> TagsNullClient class
+## <a name="client_direct"></a> TagsDirectClientV1 class
 
-TagsNullClient is a dummy client that mimics the real client but doesn't call a microservice. 
+TagsDirectClientV1 is a client that calls controller from the same container.
+It is intended to be used in monolythic deployments
+
+```javascript
+class TagsDirectClientV1 extends DirectClient implements ITagsClientV1 {
+    constructor(config?: any);        
+    setReferences(references);
+    open(correlationId, callback);
+    close(correlationId, callback);
+    getTags(correlationId, partyId, callback);
+    setTags(correlationId, partyId, tagRecords, callback);
+    recordTags(correlationId, partyId, tags, callback);
+}
+```
+
+## <a name="client_null"></a> TagsNullClientV1 class
+
+TagsNullClientV1 is a dummy client that mimics the real client but doesn't call a microservice. 
 It can be useful in testing scenarios to cut dependencies on external microservices.
 
 ```javascript
-class TagsNullClient extends AbstractClient implements ITagsClient {
+class TagsNullClientV1 implements ITagsClientV1 {
     constructor();        
-    init(refs);
-    open(callback);
-    close(callback);
-    getTags(partyId, callback);
-    setTags(partyId, tagRecords, callback);
-    recordTags(partyId, tags, callback);
+    getTags(correlationId, partyId, callback);
+    setTags(correlationId, partyId, tagRecords, callback);
+    recordTags(correlationId, partyId, tags, callback);
 }
 ```
