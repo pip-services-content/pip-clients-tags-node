@@ -55,7 +55,7 @@ var config = {
     connection: {
         protocol: 'http',
         host: 'localhost', 
-        port: 8012
+        port: 8080
     }
 };
 
