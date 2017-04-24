@@ -1,16 +1,12 @@
 import { ConfigParams } from 'pip-services-commons-node';
-import { IReferences } from 'pip-services-commons-node';
 import { Descriptor } from 'pip-services-commons-node';
-import { FilterParams } from 'pip-services-commons-node';
-import { PagingParams} from 'pip-services-commons-node';
-import { DataPage } from 'pip-services-commons-node';
 import { DirectClient } from 'pip-services-net-node';
 
 import { ITagsClientV1 } from './ITagsClientV1';
-import { ITagsBusinessLogic } from 'pip-services-Tags-node';
+//import { ITagsController } from 'pip-services-tags-node';
 import { PartyTagsV1 } from './PartyTagsV1';
 
-export class TagsDirectClientV1 extends DirectClient<ITagsBusinessLogic> implements ITagsClientV1 {
+export class TagsDirectClientV1 extends DirectClient<any> implements ITagsClientV1 {
             
     public constructor(config?: any) {
         super();

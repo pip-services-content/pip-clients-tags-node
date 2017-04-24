@@ -1,6 +1,6 @@
 import { Descriptor } from 'pip-services-commons-node';
 import { Factory } from 'pip-services-commons-node';
-export declare class TagsFactory extends Factory {
+export declare class TagsClientFactory extends Factory {
     static Descriptor: Descriptor;
     static NullClientV1Descriptor: Descriptor;
     static DirectClientV1Descriptor: Descriptor;

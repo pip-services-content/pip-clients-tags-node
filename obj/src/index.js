@@ -4,6 +4,6 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./version1"));
-var TagsFactory_1 = require("./build/TagsFactory");
-exports.TagsFactory = TagsFactory_1.TagsFactory;
+var TagsClientFactory_1 = require("./build/TagsClientFactory");
+exports.TagsClientFactory = TagsClientFactory_1.TagsClientFactory;
 //# sourceMappingURL=index.js.map

@@ -26,8 +26,11 @@ suite('TagsLambdaClient', ()=> {
         client.close(null, done);
     });
 
-    test('Crud Operations', (done) => {
-        fixture.testCrudOperations(done);
+    test('Get and Set Tags', (done) => {
+        fixture.testGetAndSetTags(done);
     });
 
+    test('Record Tags', (done) => {
+        fixture.testRecordTags(done);
+    });
 });

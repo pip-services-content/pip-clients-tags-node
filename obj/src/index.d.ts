@@ -1,2 +1,2 @@
 export * from './version1';
-export { TagsFactory } from './build/TagsFactory';
+export { TagsClientFactory } from './build/TagsClientFactory';

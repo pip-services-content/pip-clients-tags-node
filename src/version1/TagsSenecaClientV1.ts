@@ -1,5 +1,3 @@
-let os = require('os');
-
 import { ConfigParams } from 'pip-services-commons-node';
 import { IReferences } from 'pip-services-commons-node';
 import { FilterParams } from 'pip-services-commons-node';

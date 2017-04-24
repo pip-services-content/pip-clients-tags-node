@@ -6,7 +6,7 @@ import { TagsDirectClientV1 } from '../version1/TagsDirectClientV1';
 import { TagsHttpClientV1 } from '../version1/TagsHttpClientV1';
 import { TagsSenecaClientV1 } from '../version1/TagsSenecaClientV1';
 
-export class TagsFactory extends Factory {
+export class TagsClientFactory extends Factory {
 	public static Descriptor: Descriptor = new Descriptor('pip-services-tags', 'factory', 'default', 'default', '1.0');
 	public static NullClientV1Descriptor = new Descriptor('pip-services-tags', 'client', 'null', 'default', '1.0');
 	public static DirectClientV1Descriptor = new Descriptor('pip-services-tags', 'client', 'direct', 'default', '1.0');
@@ -16,10 +16,10 @@ export class TagsFactory extends Factory {
 	constructor() {
 		super();
 
-		this.registerAsType(TagsFactory.NullClientV1Descriptor, TagsNullClientV1);
-		this.registerAsType(TagsFactory.DirectClientV1Descriptor, TagsDirectClientV1);
-		this.registerAsType(TagsFactory.HttpClientV1Descriptor, TagsHttpClientV1);
-		this.registerAsType(TagsFactory.SenecaClientV1Descriptor, TagsSenecaClientV1);
+		this.registerAsType(TagsClientFactory.NullClientV1Descriptor, TagsNullClientV1);
+		this.registerAsType(TagsClientFactory.DirectClientV1Descriptor, TagsDirectClientV1);
+		this.registerAsType(TagsClientFactory.HttpClientV1Descriptor, TagsHttpClientV1);
+		this.registerAsType(TagsClientFactory.SenecaClientV1Descriptor, TagsSenecaClientV1);
 	}
 	
 }
