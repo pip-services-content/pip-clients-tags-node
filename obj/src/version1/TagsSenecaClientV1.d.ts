@@ -1,4 +1,4 @@
-import { CommandableSenecaClient } from 'pip-services-net-node';
+import { CommandableSenecaClient } from 'pip-services-seneca-node';
 import { PartyTagsV1 } from './PartyTagsV1';
 import { ITagsClientV1 } from './ITagsClientV1';
 export declare class TagsSenecaClientV1 extends CommandableSenecaClient implements ITagsClientV1 {

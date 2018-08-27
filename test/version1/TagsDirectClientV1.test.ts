@@ -4,7 +4,7 @@ let async = require('async');
 import { Descriptor } from 'pip-services-commons-node';
 import { ConfigParams } from 'pip-services-commons-node';
 import { References } from 'pip-services-commons-node';
-import { ConsoleLogger } from 'pip-services-commons-node';
+import { ConsoleLogger } from 'pip-services-components-node';
 
 import { TagsMemoryPersistence } from 'pip-services-tags-node';
 import { TagsController } from 'pip-services-tags-node';
@@ -23,7 +23,7 @@ suite('TagsDirectClientV1', ()=> {
         let controller = new TagsController();
 
         let references: References = References.fromTuples(
-            new Descriptor('pip-services-commons', 'logger', 'console', 'default', '1.0'), logger,
+            new Descriptor('pip-services', 'logger', 'console', 'default', '1.0'), logger,
             new Descriptor('pip-services-tags', 'persistence', 'memory', 'default', '1.0'), persistence,
             new Descriptor('pip-services-tags', 'controller', 'default', 'default', '1.0'), controller,
         );

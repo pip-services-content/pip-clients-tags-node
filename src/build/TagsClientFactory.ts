@@ -1,5 +1,5 @@
 import { Descriptor } from 'pip-services-commons-node';
-import { Factory } from 'pip-services-commons-node';
+import { Factory } from 'pip-services-components-node';
 
 import { TagsNullClientV1 } from '../version1/TagsNullClientV1';
 import { TagsDirectClientV1 } from '../version1/TagsDirectClientV1';

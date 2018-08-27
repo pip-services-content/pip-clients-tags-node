@@ -3,7 +3,7 @@ import { IReferences } from 'pip-services-commons-node';
 import { FilterParams } from 'pip-services-commons-node';
 import { PagingParams } from 'pip-services-commons-node';
 import { DataPage } from 'pip-services-commons-node';
-import { CommandableHttpClient } from 'pip-services-net-node';
+import { CommandableHttpClient } from 'pip-services-rpc-node';
 
 import { PartyTagsV1 } from './PartyTagsV1';
 import { ITagsClientV1 } from './ITagsClientV1';
@@ -11,7 +11,7 @@ import { ITagsClientV1 } from './ITagsClientV1';
 export class TagsHttpClientV1 extends CommandableHttpClient implements ITagsClientV1 {
 
     constructor(config?: any) {
-        super('tags');
+        super('v1/tags');
 
         if (config != null)
             this.configure(ConfigParams.fromValue(config));
