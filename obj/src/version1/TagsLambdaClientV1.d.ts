@@ -1,4 +1,4 @@
-import { CommandableLambdaClient } from 'pip-services-aws-node';
+import { CommandableLambdaClient } from 'pip-services3-aws-node';
 import { PartyTagsV1 } from './PartyTagsV1';
 import { ITagsClientV1 } from './ITagsClientV1';
 export declare class TagsLambdaClientV1 extends CommandableLambdaClient implements ITagsClientV1 {

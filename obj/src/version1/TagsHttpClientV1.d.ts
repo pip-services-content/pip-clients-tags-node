@@ -1,4 +1,4 @@
-import { CommandableHttpClient } from 'pip-services-rpc-node';
+import { CommandableHttpClient } from 'pip-services3-rpc-node';
 import { PartyTagsV1 } from './PartyTagsV1';
 import { ITagsClientV1 } from './ITagsClientV1';
 export declare class TagsHttpClientV1 extends CommandableHttpClient implements ITagsClientV1 {

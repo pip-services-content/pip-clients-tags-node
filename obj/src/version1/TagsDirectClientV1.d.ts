@@ -1,4 +1,4 @@
-import { DirectClient } from 'pip-services-rpc-node';
+import { DirectClient } from 'pip-services3-rpc-node';
 import { ITagsClientV1 } from './ITagsClientV1';
 import { PartyTagsV1 } from './PartyTagsV1';
 export declare class TagsDirectClientV1 extends DirectClient<any> implements ITagsClientV1 {
