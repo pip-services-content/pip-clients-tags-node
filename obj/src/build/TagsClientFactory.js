@@ -13,9 +13,9 @@ class TagsClientFactory extends pip_services3_components_node_1.Factory {
         this.registerAsType(TagsClientFactory.HttpClientV1Descriptor, TagsHttpClientV1_1.TagsHttpClientV1);
     }
 }
+exports.TagsClientFactory = TagsClientFactory;
 TagsClientFactory.Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-tags', 'factory', 'default', 'default', '1.0');
 TagsClientFactory.NullClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-tags', 'client', 'null', 'default', '1.0');
 TagsClientFactory.DirectClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-tags', 'client', 'direct', 'default', '1.0');
 TagsClientFactory.HttpClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-tags', 'client', 'http', 'default', '1.0');
-exports.TagsClientFactory = TagsClientFactory;
 //# sourceMappingURL=TagsClientFactory.js.map
